@@ -5,7 +5,6 @@ import pandas as pd
 import psycopg2 as pg
 import uuid
 import configparser
-import requests
 import uuid
 from datetime import datetime, timedelta
 from pytz import timezone
