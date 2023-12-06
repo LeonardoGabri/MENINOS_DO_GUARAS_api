@@ -123,9 +123,10 @@ def obter_registros_paginados_criancas_id():
 
     with engine.connect() as connection:
         resultado = connection.execute(text(query))
+        colunas = resultado.keys()  # Obter os nomes das colunas
         registros = resultado.fetchall()
 
-    registros_lista = [dict(registro.items()) for registro in registros]
+    registros_lista = [dict(zip(colunas, registro)) for registro in registros]
 
     return jsonify(registros_lista)
 
