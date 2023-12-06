@@ -1,14 +1,10 @@
 from datetime import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pandas as pd
-import psycopg2 as pg
 import uuid
 import configparser
-import requests
 import uuid
 from datetime import datetime, timedelta
-from pytz import timezone
 from sqlalchemy import create_engine, text
 
 controller = Flask(__name__)
