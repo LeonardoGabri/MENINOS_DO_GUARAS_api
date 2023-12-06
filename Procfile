@@ -1,1 +1,1 @@
-web: gunicorn API_meninos_guaras:controller
+web: gunicorn -b 0.0.0.0:$PORT API_meninos_guaras:controller

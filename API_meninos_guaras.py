@@ -5,6 +5,7 @@ import pandas as pd
 import psycopg2 as pg
 import uuid
 import configparser
+import requests
 import uuid
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -115,4 +116,5 @@ def delete_registro_crainca(id):
     connection.commit()
     return "Excluído"
 
-controller.run(port=5000, host='localhost', debug=True)
+if __name__ == "__main__":
+    controller.run(port=5000, host='0.0.0.0', debug=True)
