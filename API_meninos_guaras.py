@@ -36,7 +36,6 @@ def incluir_registro_anemometro():
 
     data_nascimento_str = request.get_json().get('data_nascimento')
     data_nascimento = datetime.strptime(data_nascimento_str, "%d/%m/%Y")
-
     data_nascimento_corrigida = data_nascimento + timedelta(days=1)
 
     cursor.execute(query, (
@@ -51,7 +50,7 @@ def incluir_registro_anemometro():
         str(request.get_json().get('categoria')),
         str(request.get_json().get('tamanho_camiseta')),
         str(request.get_json().get('tamanho_calca')),
-        data_nascimento_corrigida.date(),
+        data_nascimento_corrigida,
     ))
 
     connection.commit()
@@ -104,19 +103,11 @@ def obter_registro_criancas_id(id):
     df = pd.read_sql_query(query, con=connection)
     return df.to_dict(orient='records')[0]
 
-
 @controller.route('/crianca', methods=['GET'])
 def obter_registros_paginados_criancas_id():
-    query = "SELECT * FROM crianca"
-
-    with engine.connect() as connection:
-        resultado = connection.execute(text(query))
-        colunas = resultado.keys()  # Obter os nomes das colunas
-        registros = resultado.fetchall()
-
-    registros_lista = [dict(zip(colunas, registro)) for registro in registros]
-
-    return jsonify(registros_lista)
+    query = f"SELECT * FROM criancas"
+    df = pd.read_sql_query(query, con=connection)
+    return df.to_dict(orient='records')
 
 @controller.route('/crianca/<id>', methods=['DELETE'])
 def delete_registro_crainca(id):
