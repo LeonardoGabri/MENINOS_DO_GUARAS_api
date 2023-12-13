@@ -32,14 +32,20 @@ cursor = connection.cursor()
 def incluir_registro_anemometro():
     uuidRandom = uuid.uuid4()
 
-    query = "INSERT INTO criancas (id, nome, apelido, responsavel, telefone, numero_tenis, posicao, posicao_secundaria, categoria, tamanho_camiseta, tamanho_calca, data_nascimento ) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO criancas (id, registro, nome, apelido, responsavel, telefone, numero_tenis, posicao, posicao_secundaria, categoria, tamanho_camiseta, tamanho_calca, data_nascimento ) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    query_ultimo_registro = "SELECT MAX(registro)FROM public.criancas;"
 
     data_nascimento_str = request.get_json().get('data_nascimento')
     data_nascimento = datetime.strptime(data_nascimento_str, "%d/%m/%Y")
     data_nascimento_corrigida = data_nascimento + timedelta(days=1)
 
+    df = pd.read_sql_query(query_ultimo_registro, con=connection).to_dict(orient='records')[0]
+
+    print('REQUEST ENVIADA', request.get_json())
+
     cursor.execute(query, (
         str(uuidRandom),
+        df.get('max') + 1,
         str(request.get_json().get('nome')),
         str(request.get_json().get('apelido')),
         str(request.get_json().get('responsavel')),
